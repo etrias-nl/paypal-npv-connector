@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Etrias\PayPalNvpConnector\Api;
 
-use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
+use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
+use Etrias\PayPalNvpConnector\Type\Transaction;
 use GuzzleHttp\Psr7\Uri;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -52,12 +53,17 @@ class PayPalNvp
         $groups = [];
 
         foreach ($data as $key => $value) {
-            if (preg_match('~^L_(.+)(\d+)$~', $key, $matches)) {
+            if (preg_match('~^L_(.+?)(\d++)$~', $key, $matches)) {
                 $groups[$matches[2]][$matches[1]] = $value;
             }
         }
 
-        var_dump($groups);
+        $transactions = [];
+        foreach ($groups as $group) {
+            $transactions[] = Transaction::fromQueryResult($group);
+        }
+
+        return $transactions;
     }
 
     protected function get(string $method, array $query): array

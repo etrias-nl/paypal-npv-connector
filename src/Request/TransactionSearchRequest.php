@@ -8,13 +8,13 @@ class TransactionSearchRequest
 {
     use QueryTrait;
 
-    /** @var \DateTimeInterface|null */
+    /** @var null|\DateTimeInterface */
     protected $startDate;
 
-    /** @var string|null */
+    /** @var null|string */
     protected $invNum;
 
-    /** @var string|null */
+    /** @var null|string */
     protected $transactionId;
 
     public function getStartDate(): ?\DateTimeInterface
