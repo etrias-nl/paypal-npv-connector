@@ -14,6 +14,9 @@ class TransactionSearchRequest
     /** @var string|null */
     protected $invNum;
 
+    /** @var string|null */
+    protected $transactionId;
+
     public function getStartDate(): ?\DateTimeInterface
     {
         return $this->startDate;
@@ -34,6 +37,18 @@ class TransactionSearchRequest
     public function setInvNum(?string $invNum): self
     {
         $this->invNum = $invNum;
+
+        return $this;
+    }
+
+    public function getTransactionId(): ?string
+    {
+        return $this->transactionId;
+    }
+
+    public function setTransactionId(?string $transactionId): self
+    {
+        $this->transactionId = $transactionId;
 
         return $this;
     }

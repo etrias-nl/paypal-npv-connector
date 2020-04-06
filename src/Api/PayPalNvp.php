@@ -46,9 +46,18 @@ class PayPalNvp
         return 0;
     }
 
-    public function transactionSearch(TransactionSearchRequest $request)
+    public function transactionSearch(TransactionSearchRequest $request): array
     {
         $data = $this->get(__FUNCTION__, $request->toQueryArray());
+        $groups = [];
+
+        foreach ($data as $key => $value) {
+            if (preg_match('~^L_(.+)(\d+)$~', $key, $matches)) {
+                $groups[$matches[2]][$matches[1]] = $value;
+            }
+        }
+
+        var_dump($groups);
     }
 
     protected function get(string $method, array $query): array
