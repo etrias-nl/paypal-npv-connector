@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Etrias\PayPalNvpConnector\Api;
 
+use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
 use GuzzleHttp\Psr7\Uri;
 use Http\Client\Common\HttpMethodsClientInterface;
@@ -34,14 +35,20 @@ class PayPalNvp
     {
         $data = $this->get(__FUNCTION__, $request->toQueryArray());
         $i = 0;
+
         while (isset($data['L_CURRENCYCODE'.$i])) {
             if ($request->getCurrency() === $data['L_CURRENCYCODE'.$i]) {
-                return (int) ($data['L_AMT'.$i]);
+                return (int) $data['L_AMT'.$i];
             }
             ++$i;
         }
 
         return 0;
+    }
+
+    public function transactionSearch(TransactionSearchRequest $request)
+    {
+        $data = $this->get(__FUNCTION__, $request->toQueryArray());
     }
 
     protected function get(string $method, array $query): array
