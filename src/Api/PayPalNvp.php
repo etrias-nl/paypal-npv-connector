@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Etrias\PayPalNvpConnector\Api;
 
+use Etrias\PayPalNvpConnector\Exception\PayPalNvpException;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
+use Etrias\PayPalNvpConnector\Request\GetTransactionDetailsRequest;
 use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
 use Etrias\PayPalNvpConnector\Type\Transaction;
+use Etrias\PayPalNvpConnector\Type\TransactionDetails;
 use GuzzleHttp\Psr7\Uri;
 use Http\Client\Common\HttpMethodsClientInterface;
 use Http\Discovery\Psr17FactoryDiscovery;
@@ -15,8 +18,10 @@ use Psr\Http\Message\UriFactoryInterface;
 class PayPalNvp
 {
     protected const VERSION = '82';
+    protected const ACK = ['SUCCESS', 'SUCCESSWITHWARNING'];
     protected const PARAM_METHOD = 'METHOD';
     protected const PARAM_VERSION = 'VERSION';
+    protected const PARAM_ACK = 'ACK';
 
     /** @var HttpMethodsClientInterface */
     protected $client;
@@ -69,6 +74,13 @@ class PayPalNvp
         return $transactions;
     }
 
+    public function getTransactionDetails(GetTransactionDetailsRequest $request): TransactionDetails
+    {
+        $data = $this->get(__FUNCTION__, $request->toQueryArray());
+
+        return TransactionDetails::fromQueryResult($data);
+    }
+
     protected function get(string $method, array $query): array
     {
         $query[self::PARAM_METHOD] = ucfirst($method);
@@ -78,6 +90,10 @@ class PayPalNvp
         $result = [];
 
         parse_str((string) $response->getBody(), $result);
+
+        if (isset($result[self::PARAM_ACK]) && !\in_array(strtoupper($result[self::PARAM_ACK]), self::ACK, true)) {
+            throw new PayPalNvpException('Result not acknowledged.');
+        }
 
         return $result;
     }
