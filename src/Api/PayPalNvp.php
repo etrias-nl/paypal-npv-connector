@@ -7,6 +7,7 @@ namespace Etrias\PayPalNvpConnector\Api;
 use Etrias\PayPalNvpConnector\Exception\PayPalNvpException;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
 use Etrias\PayPalNvpConnector\Request\GetTransactionDetailsRequest;
+use Etrias\PayPalNvpConnector\Request\RefundTransactionRequest;
 use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
 use Etrias\PayPalNvpConnector\Type\Transaction;
 use Etrias\PayPalNvpConnector\Type\TransactionDetails;
@@ -81,6 +82,11 @@ class PayPalNvp
         return TransactionDetails::fromQueryResult($data);
     }
 
+    public function refundTransaction(RefundTransactionRequest $request): void
+    {
+        $this->get(__FUNCTION__, $request->toQueryArray());
+    }
+
     protected function get(string $method, array $query): array
     {
         $query[self::PARAM_METHOD] = ucfirst($method);
@@ -92,7 +98,7 @@ class PayPalNvp
         parse_str((string) $response->getBody(), $result);
 
         if (isset($result[self::PARAM_ACK]) && !\in_array(strtoupper($result[self::PARAM_ACK]), self::ACK, true)) {
-            throw new PayPalNvpException('Result not acknowledged.');
+            throw new PayPalNvpException($result[self::PARAM_ACK]);
         }
 
         return $result;
