@@ -8,6 +8,10 @@ trait QueryTrait
 {
     public function toQueryArray(): array
     {
+        $query = array_filter(get_object_vars($this), function ($value) {
+            return null !== $value;
+        });
+
         return array_change_key_case(array_map(function ($value) {
             if ($value instanceof \DateTimeImmutable) {
                 $value = \DateTime::createFromImmutable($value);
@@ -17,6 +21,6 @@ trait QueryTrait
             }
 
             return $value;
-        }, get_object_vars($this)), CASE_UPPER);
+        }, $query), CASE_UPPER);
     }
 }

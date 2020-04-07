@@ -47,6 +47,9 @@ class PayPalNvp
         return 0;
     }
 
+    /**
+     * @return Transaction[]
+     */
     public function transactionSearch(TransactionSearchRequest $request): array
     {
         $data = $this->get(__FUNCTION__, $request->toQueryArray());
