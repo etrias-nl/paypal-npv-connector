@@ -23,6 +23,8 @@ class PayPalNvp
     protected const PARAM_METHOD = 'METHOD';
     protected const PARAM_VERSION = 'VERSION';
     protected const PARAM_ACK = 'ACK';
+    protected const PARAM_ERROR_CODE = 'L_ERRORCODE0';
+    protected const PARAM_ERROR_MESSAGE = 'L_LONGMESSAGE0';
 
     /** @var HttpMethodsClientInterface */
     protected $client;
@@ -98,7 +100,12 @@ class PayPalNvp
         parse_str((string) $response->getBody(), $result);
 
         if (isset($result[self::PARAM_ACK]) && !\in_array(strtoupper($result[self::PARAM_ACK]), self::ACK, true)) {
-            throw new PayPalNvpException($result[self::PARAM_ACK]);
+            $message = $result[self::PARAM_ERROR_MESSAGE] ?? $result[self::PARAM_ACK];
+            if (isset($result[self::PARAM_ERROR_CODE])) {
+                $message.= ' (code='.$result[self::PARAM_ERROR_CODE].')';
+            }
+
+            throw new PayPalNvpException($message);
         }
 
         return $result;
