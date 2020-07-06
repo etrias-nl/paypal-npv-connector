@@ -14,11 +14,17 @@ class Transaction
     public const STATUS_REVERSED = 'Reversed';
     public const STATUS_REFUNDED = 'Refunded';
 
+    public const TYPE_REFUND = 'Refund';
+    public const TYPE_PAYMENT = 'Payment';
+
     /** @var null|string */
     protected $status;
 
     /** @var null|string */
     protected $transactionId;
+
+    /** @var null|string */
+    protected $type;
 
     public function getStatus(): ?string
     {
@@ -36,5 +42,18 @@ class Transaction
     public function getTransactionId(): ?string
     {
         return $this->transactionId;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string|string[] $type
+     */
+    public function isType($type): bool
+    {
+        return $type === $this->type || (\is_array($type) && \in_array($this->type, $type, true));
     }
 }
