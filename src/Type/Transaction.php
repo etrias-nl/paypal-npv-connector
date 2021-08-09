@@ -26,6 +26,12 @@ class Transaction
     /** @var null|string */
     protected $type;
 
+    /** @var null|string */
+    protected $amt;
+
+    /** @var null|string */
+    protected $feeamt;
+
     public function getStatus(): ?string
     {
         return $this->status;
@@ -55,5 +61,21 @@ class Transaction
     public function isType($type): bool
     {
         return $type === $this->type || (\is_array($type) && \in_array($this->type, $type, true));
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAmt(): ?string
+    {
+        return $this->amt;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFeeamt(): ?string
+    {
+        return $this->feeamt;
     }
 }
