@@ -8,6 +8,7 @@ use Etrias\PayPalNvpConnector\Exception\PayPalNvpException;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
 use Etrias\PayPalNvpConnector\Request\GetTransactionDetailsRequest;
 use Etrias\PayPalNvpConnector\Request\RefundTransactionRequest;
+use Etrias\PayPalNvpConnector\Request\SetExpressCheckoutRequest;
 use Etrias\PayPalNvpConnector\Request\TransactionSearchRequest;
 use Etrias\PayPalNvpConnector\Type\Transaction;
 use Etrias\PayPalNvpConnector\Type\TransactionDetails;
@@ -88,6 +89,17 @@ class PayPalNvp
     {
         $this->get(__FUNCTION__, $request->toQueryArray());
     }
+
+    public function setExpressCheckout(SetExpressCheckoutRequest $request)
+    {
+        return $this->get(__FUNCTION__, $request->toQueryArray());
+        // https://developer.paypal.com/api/nvp-soap/set-express-checkout-nvp/
+    }
+
+    // DoExpressCheckoutPayment
+
+    // GetExpressCheckoutDetails
+
 
     protected function get(string $method, array $query): array
     {
