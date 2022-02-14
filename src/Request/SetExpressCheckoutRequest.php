@@ -13,7 +13,8 @@ class SetExpressCheckoutRequest
     public const CHANNEL_TYPE = 'Merchant';
     public const TOTAL_TYPE = 'Total';
     public const PAYMENT_REASON = 'None';
-    public const PAYMENT_ACTION = 'Sale';
+    public const PAYMENT_ACTION_ORDER = 'Order';
+    public const PAYMENT_ACTION_SALE = 'Sale';
 
     public const SOLUTION_GUEST = 'Sole';
     public const SOLUTION_ACCOUNT = 'Mark';

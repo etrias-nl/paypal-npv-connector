@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Etrias\PayPalNvpConnector\Api;
 
 use Etrias\PayPalNvpConnector\Exception\PayPalNvpException;
+use Etrias\PayPalNvpConnector\Request\DoExpressCheckoutPaymentRequest;
 use Etrias\PayPalNvpConnector\Request\GetBalanceRequest;
+use Etrias\PayPalNvpConnector\Request\GetExpressCheckoutDetailsRequest;
 use Etrias\PayPalNvpConnector\Request\GetTransactionDetailsRequest;
 use Etrias\PayPalNvpConnector\Request\RefundTransactionRequest;
 use Etrias\PayPalNvpConnector\Request\SetExpressCheckoutRequest;
@@ -90,16 +92,21 @@ class PayPalNvp
         $this->get(__FUNCTION__, $request->toQueryArray());
     }
 
-    public function setExpressCheckout(SetExpressCheckoutRequest $request)
+    // https://developer.paypal.com/api/nvp-soap/set-express-checkout-nvp/
+    public function setExpressCheckout(SetExpressCheckoutRequest $request): array
     {
         return $this->get(__FUNCTION__, $request->toQueryArray());
-        // https://developer.paypal.com/api/nvp-soap/set-express-checkout-nvp/
     }
 
-    // DoExpressCheckoutPayment
+    public function getExpressCheckoutDetails(GetExpressCheckoutDetailsRequest $request): array
+    {
+        return $this->get(__FUNCTION__, $request->toQueryArray());
+    }
 
-    // GetExpressCheckoutDetails
-
+    public function doExpressCheckoutPayment(DoExpressCheckoutPaymentRequest $request): array
+    {
+        return $this->get(__FUNCTION__, $request->toQueryArray());
+    }
 
     protected function get(string $method, array $query): array
     {
