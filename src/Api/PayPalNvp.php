@@ -87,12 +87,11 @@ class PayPalNvp
         return TransactionDetails::fromQueryResult($data);
     }
 
-    public function refundTransaction(RefundTransactionRequest $request): void
+    public function refundTransaction(RefundTransactionRequest $request): array
     {
-        $this->get(__FUNCTION__, $request->toQueryArray());
+        return $this->get(__FUNCTION__, $request->toQueryArray());
     }
 
-    // https://developer.paypal.com/api/nvp-soap/set-express-checkout-nvp/
     public function setExpressCheckout(SetExpressCheckoutRequest $request): array
     {
         return $this->get(__FUNCTION__, $request->toQueryArray());
