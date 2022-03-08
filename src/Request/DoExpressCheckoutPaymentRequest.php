@@ -11,8 +11,6 @@ class DoExpressCheckoutPaymentRequest
     protected ?string $token;
     protected ?string $payerId;
 
-    // SKIPBACREATION
-
     protected ?string $paymentRequest_0_amt;
     protected ?string $paymentRequest_0_currencyCode;
     protected ?string $paymentRequest_0_itemAmt;
